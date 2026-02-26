@@ -1,0 +1,9 @@
+sequenceDiagram
+    participant Lib as Library
+    participant Node as Full Node
+    participant Store as Storage
+    participant Sync as Sync (Network)
+
+    Lib->>Node: create message (message model)
+    Node->>Store: store message in merkle tree
+    Node->>Sync: sync data to peers

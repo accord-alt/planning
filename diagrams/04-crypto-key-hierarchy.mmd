@@ -1,0 +1,12 @@
+graph TD
+    EC["Elliptic Curve"]
+
+    EC -->|"generates"| MasterPriv["Master Private Key (stored in user/private)"]
+    MasterPriv -->|"derives"| MasterPub["Master Public Key (stored in user/public)"]
+    MasterPub -->|"hashes to"| UserId["User ID (stored in user/id)"]
+
+    MasterPriv -->|"derives per-connection"| ConnPriv["Connection Private Key (stored in connections/<id>/private)"]
+    ConnPriv -->|"derives"| ConnPub["Connection Public Key (stored in connections/<id>/public)"]
+
+    ConnPriv -->|"Diffie-Hellman exchange with remote public key"| Shared["Shared Secret Key (stored in connections/<id>/shared)"]
+    RemotePub["Remote User's Connection Public Key"] -->|"input to DH"| Shared

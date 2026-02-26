@@ -1,0 +1,14 @@
+flowchart TD
+    Start(["Node starts"])
+    Start --> Local & Remote
+
+    Local["mDNS scan (local network)"]
+    Remote["Kademlia DHT scan (remote / internet)"]
+
+    Local --> Ports["Port range scan 51030 – 51042"]
+    Remote --> Ports
+
+    Ports --> Found{"Peers found?"}
+    Found -->|yes| Store["Add to peers list ($HOME/.accord/peers)"]
+    Found -->|no| Retry["Retry / keep listening"]
+    Store --> Connect["Establish libp2p connections"]

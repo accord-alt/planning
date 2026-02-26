@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant Lib as Library
+    participant Node as Full Node
+    participant Store as Storage
+    participant Sync as Sync (Network)
+
+    Lib->>Node: create user
+
+    Node->>Node: generate ID (elliptic curve)
+    Node->>Store: store ID
+
+    Node->>Node: create master private / public key pair
+    Node->>Store: store master private / public key pair
+
+    Node->>Sync: sync user ID with peers
+
+    Node-->>Lib: return user model

@@ -1,0 +1,9 @@
+sequenceDiagram
+    participant Lib as Library
+    participant Node as Full Node
+    participant Store as Storage
+
+    Lib->>Node: get user (id)
+    Node->>Store: read user (ID + meta)
+    Node->>Node: build user model from ID and metadata
+    Node-->>Lib: return user model

@@ -1,0 +1,13 @@
+graph TD
+    Client["Client (Flutter)"]
+    Library["Library (Rust)"]
+    FullNode["Full Node (Rust / libp2p)"]
+    GossipNode["Gossip Node (Rust / libp2p)"]
+    Network["P2P Network"]
+
+    Client -->|"calls"| Library
+    Library -->|"calls"| FullNode
+    FullNode -->|"participates in"| Network
+    GossipNode -->|"participates in"| Network
+    Network -->|"peer sync"| FullNode
+    Network -->|"peer sync"| GossipNode

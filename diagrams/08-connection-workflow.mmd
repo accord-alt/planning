@@ -1,0 +1,25 @@
+sequenceDiagram
+    participant Lib as Library
+    participant NodeA as Full Node (initiator)
+    participant StoreA as Storage (initiator)
+    participant Sync as Sync (Network)
+    participant NodeB as Full Node (remote user)
+    participant StoreB as Storage (remote)
+
+    Lib->>NodeA: create connection (user id)
+
+    NodeA->>StoreA: create connection directory with user ID
+    NodeA->>StoreA: generate connection private / public key pair
+    NodeA->>Sync: share connection public key via message
+
+    Sync->>NodeB: sync public key message
+
+    NodeB->>NodeB: accept connection
+    NodeB->>StoreB: create connection private / public key pair
+    NodeB->>StoreB: create shared key (from NodeA's public key)
+    NodeB->>Sync: send own connection public key via message
+
+    Sync->>NodeA: sync NodeB's public key message
+
+    NodeA->>StoreA: derive shared key from NodeB's public key
+    Note over NodeA,NodeB: Both sides now hold matching shared secret (DH)

@@ -1,0 +1,26 @@
+sequenceDiagram
+    participant Lib as Library
+    participant Node as Full Node
+    participant Store as Storage
+    participant Net as Network / Peers
+
+    Lib->>Node: sync data
+
+    Node->>Store: read current root hash
+    Node->>Net: send current root hash
+
+    alt Network already has latest
+        Net-->>Node: Latest (no update needed)
+        Node-->>Lib: Done
+    else Network has newer data
+        Net-->>Node: Update — send merkle tree
+        Node->>Store: get root hash of received tree
+        Node->>Store: create directory for new root hash
+        Node->>Store: store tree in directory
+        Node->>Store: update current → new hash
+        Node->>Store: update indexes with new hash
+        Node-->>Lib: Done
+    else Node has newer data
+        Node->>Net: send update with current tree
+        Node-->>Lib: Done
+    end

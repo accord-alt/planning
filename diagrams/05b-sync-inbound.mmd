@@ -1,0 +1,26 @@
+sequenceDiagram
+    participant Net as Network / Peer
+    participant Node as Full Node
+    participant Store as Storage
+
+    Net->>Node: sync request with hash
+
+    Node->>Store: read current root hash
+    Node->>Node: compare received hash vs current
+
+    alt Hash matches current (already latest)
+        Node->>Net: send back "latest" confirmation
+    else Hash does not match current
+        Node->>Store: read indexes
+        alt Hash exists in indexes
+            Node->>Net: send update with tree for that hash
+        else Hash not found in indexes
+            Node->>Net: send our current hash
+            Net-->>Node: Update — send merkle tree
+            Node->>Store: get root hash of received tree
+            Node->>Store: create directory for new root hash
+            Node->>Store: store tree in directory
+            Node->>Store: update current → new hash
+            Node->>Store: update indexes with new hash
+        end
+    end

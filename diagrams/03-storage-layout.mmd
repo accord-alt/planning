@@ -1,0 +1,27 @@
+graph TD
+    Root["$HOME/.accord"]
+
+    Root --> Peers["peers (vector of peer addresses)"]
+    Root --> Database["database/ (merkle tree storage)"]
+    Root --> Current["current (active root hash pointer)"]
+    Root --> Indexes["indexes (merkle tree of root hashes)"]
+    Root --> Users["users/ (all known users)"]
+    Root --> User["user/ (local user identity)"]
+
+    Database --> HashDir["<root hash>/"]
+    HashDir --> Data["data (full merkle tree)"]
+
+    Users --> UserId["<user id>/"]
+    UserId --> UserMeta["meta (JSON metadata)"]
+
+    User --> Connections["connections/"]
+    User --> LocalId["id (elliptic curve user ID)"]
+    User --> LocalMeta["meta (JSON metadata)"]
+    User --> MasterPriv["private (master private key)"]
+    User --> MasterPub["public (master public key)"]
+
+    Connections --> ConnDir["<connection user id>/"]
+    ConnDir --> ConnMeta["meta (JSON metadata)"]
+    ConnDir --> ConnPriv["private (derived private key)"]
+    ConnDir --> ConnPub["public (derived public key)"]
+    ConnDir --> Shared["shared (DH shared key)"]
