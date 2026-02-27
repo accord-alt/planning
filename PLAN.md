@@ -244,9 +244,103 @@ $HOME/.accord
   - Meta data
   - A from ID
   - A to ID
+  - A status
 
 #### Plugins
 
 - Read incoming messages
 - Find plugin by plugin type from message
 - Execute plugin with the message as an argument
+
+#### API
+
+- send_message(to: String, message: String, plugin_type: Option<String>, plugin_body: Option<String>)
+  - Creates a message
+  - Saves it to the data merkle
+  - Syncs the data with peers
+- messages()
+  - gets all messages from data
+- create_user(nick: Option<String>)
+  - creates a user
+- users()
+  - gets all users
+- user(id: Option<String>, nick: Option<String>)
+  - get a user by id or nick
+- connect(id: Option<String>, nick: Option<String>)
+  - creates a connection with a user
+  - sends a message with the plugin_type of connection and the plugin_body of a connection model
+- connections(status: Option<ConnectionStatus>)
+  - gets all connections of a given status
+  - if no status is given
+    - gets all connections
+- start_node(port: Option<i64>)
+  - starts the node on the port (defaults to 51030)
+- stop_node()
+  - stops the node
+- restart_node(port: Option<i64>)
+  - stops the node
+  - starts the node on port
+
+### Clients
+
+- TUI
+- Flutter
+
+#### TUI
+
+The TUI will be used to test the network manually. The binary will act as a full node and have the network library embedded in it.
+
+- Start the node when the TUI starts
+
+##### Tech Stack
+
+- rust
+- ratatui
+- network crate from git@github.com:accord-alt/network
+
+##### Layout
+
+```ascii
++======================+
+| Accord ver <version> |
++======================+
+| Content              |
++======================+
+| Prompt               |
++======================+
+```
+
+##### Content
+
+- Content should be scrollable with the mouse or page up/down
+
+##### Prompt
+
+- Prompt must have a history of previous prompts
+- Prompt history is scrollable with an up/down key
+
+###### Commands
+
+| Command | Description |
+| /sync | Sync the data with peers |
+| /messagePlugin <user id> <plugin type> <plugin body> | Create a plugin message |
+| /message <user id> <message body> | Create a message |
+| /messages | Show all messages in content |
+| /user | Show the user or create one if it doesn't exist in content |
+| /nick | Change the users name |
+| /users | Show all users found in content |
+| /user <user nick> | Show a given user from the user nick in content |
+| /connection <user nick> | Create a connection with a user |
+| /connections | View all connections |
+| /connectionsPending | View all connections pending |
+| /acceptConnection <connection id> | Accept a connection request |
+| /declineConnection <connection id> | Decline a connection |
+| /startNode | Start the node |
+| /stopNode | Stop the node |
+| /restartNode | Restart the node |
+| /peers | Show all peers in content |
+| /quit | Quit the TUI |
+| /help | Show all commands in content |
+| /port <port> | Change the port the node is running on and restart the node |
+| /events | Show all the node events in content |
+| /console | Show all output in content |
